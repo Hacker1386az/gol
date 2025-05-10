@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>سایت ثبت سفارش ساخت دسته گل</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #f0fbf6, #d7efff);
+    color: #1b2b27;
+    direction: rtl;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  button {
+    font-family: inherit;
+  }
+
+  /* Header */
+  header {
+    background: #16a085;
+    color: white;
+    padding: 18px 15px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgb(22 160 133 / 0.5);
+  }
+  header h1 {
+    font-size: 2rem;
+    margin: 0;
+    user-select: none;
+  }
+  header p {
+    font-weight: 600;
+    margin: 6px 0 0;
+    font-size: 1.1rem;
+  }
+
+  /* Main container */
+  main {
+    max-width: 380px;
+    margin: 25px auto;
+    padding: 0 12px 50px;
+  }
+  h2.section-title {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #16a085;
+    margin-bottom: 25px;
+    user-select: none;
+    text-shadow: 0 0 5px #16a085aa;
+  }
+
+  /* Portfolio Grid */
+  .portfolio-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width:600px) {
+    .portfolio-list {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 18px;
+    }
+  }
+
+  /* Portfolio item card */
+  .portfolio-item {
+    background: white;
+    border-radius: 20px;
+    box-shadow:
+      0 8px 20px rgb(22 160 133 / 0.22);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .portfolio-item:hover {
+    transform: scale(1.05);
+    box-shadow:
+      0 14px 40px rgb(22 160 133 / 0.4);
+    z-index: 5;
+  }
+
+  /* Portfolio thumbnail */
+  .portfolio-thumb {
+    aspect-ratio: 4 / 4;
+    background-size: cover;
+    background-position: center center;
+    border-bottom: 5px solid #16a085;
+  }
+
+  /* Portfolio details */
+  .portfolio-details {
+    padding: 14px 18px 22px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .portfolio-title {
+    font-weight: 800;
+    color: #13876c;
+    font-size: 1.15rem;
+    margin: 0 0 8px;
+    user-select: none;
+    text-shadow: 0 0 6px #16a08588;
+  }
+  .portfolio-desc {
+    font-size: 0.95rem;
+    color: #014636dd;
+    line-height: 1.3;
+    flex-grow: 1;
+    user-select: none;
+  }
+
+  /* Order button */
+  .order-btn {
+    margin-top: 14px;
+    background: #16a085;
+    color: white;
+    border: none;
+    border-radius: 28px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 15px #119370cc;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .order-btn:hover,
+  .order-btn:focus {
+    background-color: #0e6a67;
+    outline: none;
+  }
+
+  /* Modal Wrapper */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 15px;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  /* Modal Content */
+  .modal {
+    background: white;
+    border-radius: 25px;
+    max-width: 380px;
+    width: 100%;
+    padding: 30px 25px 25px;
+    box-shadow: 0 15px 45px rgb(22 160 133 / 0.5);
+    position: relative;
+  }
+
+  .modal h3 {
+    font-size: 1.5rem;
+    color: #13876c;
+    margin-top: 0;
+    font-weight: 900;
+    user-select: none;
+    text-align: center;
+    text-shadow: 0 0 8px #16a085bb;
+  }
+
+  /* Close button */
+  .close-btn {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    background: transparent;
+    border: none;
+    font-size: 1.7rem;
+    color: #13876c;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 2px 8px 0 8px;
+    user-select: none;
+    transition: color 0.2s ease;
+  }
+  .close-btn:hover,
+  .close-btn:focus {
+    color: #0b504b;
+    outline: none;
+  }
+
+  /* Form Styles */
+  form {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  label {
+    font-weight: 700;
+    color: #0e4c45;
+    font-size: 1rem;
+    user-select: none;
+  }
+  input, select, textarea {
+    padding: 10px 14px;
+    font-size: 1rem;
+    border-radius: 15px;
+    border: 2px solid #16a085;
+    outline-offset: 2px;
+    outline-color: transparent;
+    transition: outline-color 0.3s ease;
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline-color: #13876c;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 70px;
+  }
+  button.submit-btn {
+    background: #16a085;
+    color: white;
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 13px 22px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 30px #12a481cc;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  button.submit-btn:hover,
+  button.submit-btn:focus {
+    background-color: #0e6a67;
+    outline: none;
+  }
+
+  /* Validation error message */
+  .error-message {
+    color: #cc1f1f;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: -12px;
+    user-select: none;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #119370aa;
+    margin: 40px 0 15px;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>  فلوریا</h1>
+  <p>سفارش آنلاین دسته گل‌های شیک و خاص</p>
+</header>
+
+<main>
+  <h2 class="section-title">نمونه کارها</h2>
+  <section class="portfolio-list">
+
+    <article class="portfolio-item" tabindex="0" aria-label="دسته گل شیک و منحصر به فرد">
+      <div class="portfolio-thumb" style="background-image: url('3.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">دسته گل شیک و خاص</h3>
+        <p class="portfolio-desc">طرح‌های تازه و خاص برای هر مناسبت.</p>
+        <button class="order-btn" data-bouquet=" 200 ">ثبت سفارش</button>
+      </div>
+    </article>
+
+    <article class="portfolio-item" tabindex="0" aria-label="دسته گل ویژه روز مادر">
+      <div class="portfolio-thumb" style="background-image: url('1.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">دسته گل ویژه روز مادر</h3>
+        <p class="portfolio-desc">هدیه‌ای زیبا و دلنشین برای مادران عزیز.</p>
+        <button class="order-btn" data-bouquet="  250  ">ثبت سفارش</button>
+      </div>
+    </article>
+
+    <article class="portfolio-item" tabindex="0" aria-label="دسته گل عروسی رویایی">
+      <div class="portfolio-thumb" style="background-image: url('2.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">دسته گل عروسی رویایی</h3>
+        <p class="portfolio-desc">طراحی مدرن و خاص برای روز فراموش‌نشدنی شما.</p>
+        <button class="order-btn" data-bouquet=" 300  ">ثبت سفارش</button>
+      </div>
+    </article>
+
+    <article class="portfolio-item" tabindex="0" aria-label="دسته گل تبریک و تسلیت">
+      <div class="portfolio-thumb" style="background-image: url('4.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">دسته گل تبریک و تسلیت</h3>
+        <p class="portfolio-desc">برای ابراز احساسات شما با گل‌های تازه و زیبا.</p>
+        <button class="order-btn" data-bouquet="  350  ">ثبت سفارش</button>
+      </div>
+    </article>
+
+    <article class="portfolio-item" tabindex="0" aria-label="هدیه‌ای زیبا با دسته گل">
+      <div class="portfolio-thumb" style="background-image: url('5.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">هدیه‌ای زیبا با دسته گل</h3>
+        <p class="portfolio-desc">بسته‌بندی شیک و گل‌های تازه برای هدیه‌ای خاص.</p>
+        <button class="order-btn" data-bouquet=" 400  ">ثبت سفارش</button>
+      </div>
+    </article>
+
+
+    <article class="portfolio-item" tabindex="0" aria-label="هدیه‌ای زیبا با دسته گل">
+      <div class="portfolio-thumb" style="background-image: url('6.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">هدیه‌ای زیبا با دسته گل</h3>
+        <p class="portfolio-desc">بسته‌بندی شیک و گل‌های تازه برای هدیه‌ای خاص.</p>
+        <button class="order-btn" data-bouquet="  450  ">ثبت سفارش</button>
+      </div>
+    </article>
+
+
+
+    <article class="portfolio-item" tabindex="0" aria-label="هدیه‌ای زیبا با دسته گل">
+      <div class="portfolio-thumb" style="background-image: url('7.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">هدیه‌ای زیبا با دسته گل</h3>
+        <p class="portfolio-desc">بسته‌بندی شیک و گل‌های تازه برای هدیه‌ای خاص.</p>
+        <button class="order-btn" data-bouquet=" 500 ">ثبت سفارش</button>
+      </div>
+    </article>
+
+
+
+    <article class="portfolio-item" tabindex="0" aria-label="هدیه‌ای زیبا با دسته گل">
+      <div class="portfolio-thumb" style="background-image: url('8.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">هدیه‌ای زیبا با دسته گل</h3>
+        <p class="portfolio-desc">بسته‌بندی شیک و گل‌های تازه برای هدیه‌ای خاص.</p>
+        <button class="order-btn" data-bouquet=" 550  ">ثبت سفارش</button>
+      </div>
+    </article>
+
+
+
+
+    <article class="portfolio-item" tabindex="0" aria-label="هدیه‌ای زیبا با دسته گل">
+      <div class="portfolio-thumb" style="background-image: url('9.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">هدیه‌ای زیبا با دسته گل</h3>
+        <p class="portfolio-desc">بسته‌بندی شیک و گل‌های تازه برای هدیه‌ای خاص.</p>
+        <button class="order-btn" data-bouquet="600">ثبت سفارش</button>
+      </div>
+    </article>
+
+
+
+
+    <article class="portfolio-item" tabindex="0" aria-label="هدیه‌ای زیبا با دسته گل">
+      <div class="portfolio-thumb" style="background-image: url('10.jpg');"></div>
+      <div class="portfolio-details">
+        <h3 class="portfolio-title">هدیه‌ای زیبا با دسته گل</h3>
+        <p class="portfolio-desc">بسته‌بندی شیک و گل‌های تازه برای هدیه‌ای خاص.</p>
+        <button class="order-btn" data-bouquet="650 ">ثبت سفارش</button>
+      </div>
+    </article>
+
+    
+  </section>
+</main>
+
+<!-- Modal Form -->
+<div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="order-form-title" tabindex="-1" id="orderModal">
+  <div class="modal">
+    <button class="close-btn" aria-label="بستن فرم سفارش" id="closeModal">&times;</button>
+    <h3 id="order-form-title">ثبت سفارش ساخت دسته گل</h3>
+    <form id="orderForm" novalidate>
+      <label for="customerName">نام و نام خانوادگی</label>
+      <input type="text" id="customerName" name="customerName" placeholder="مثال: محمد محمدی" required autocomplete="name" />
+
+      <label for="customerPhone">شماره تماس</label>
+      <input type="tel" id="customerPhone" name="customerPhone" placeholder="مثال: 09123456789" pattern="^09\d{9}$" required autocomplete="tel" />
+
+      <label for="bouquetName">کد دسته گل</label>
+      <input type="text" id="bouquetName" name="bouquetName" readonly aria-readonly="true" />
+
+      <button type="submit" class="submit-btn">ارسال سفارش از طریق واتساپ</button>
+      <p class="error-message" id="formError" role="alert" aria-live="assertive" style="display:none;"></p>
+    </form>
+  </div>
+</div>
+
+<footer>
+  © ۲۰۲۴ ساخت دسته گل شما
+</footer>
+
+<script>
+  (() => {
+    const modal = document.getElementById('orderModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const orderForm = document.getElementById('orderForm');
+    const bouquetInput = orderForm.querySelector('#bouquetName');
+    const formError = document.getElementById('formError');
+
+    // WhatsApp number to send messages to (replace with your number)
+    const whatsAppNumber = '989178378954'; // In international format without +, e.g. 989123456789 for +98 9123456789
+
+    // Open modal with bouquet name set
+    document.querySelectorAll('.order-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        bouquetInput.value = btn.getAttribute('data-bouquet') || '';
+        formError.style.display = 'none';
+        formError.textContent = '';
+        orderForm.customerName.value = '';
+        orderForm.customerPhone.value = '';
+        modal.classList.add('active');
+        orderForm.customerName.focus();
+      });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+
+    orderForm.addEventListener('submit', event => {
+      event.preventDefault();
+      
+      // Validation
+      const nameVal = orderForm.customerName.value.trim();
+      const phoneVal = orderForm.customerPhone.value.trim();
+      const bouquetVal = bouquetInput.value.trim();
+
+      if (!nameVal) {
+        formError.textContent = 'لطفاً نام و نام خانوادگی خود را وارد کنید.';
+        formError.style.display = 'block';
+        orderForm.customerName.focus();
+        return;
+      }
+      if (!phoneVal.match(/^09\d{9}$/)) {
+        formError.textContent = 'لطفاً شماره تماس صحیح با 11 رقم شروع شده با 09 وارد کنید.';
+        formError.style.display = 'block';
+        orderForm.customerPhone.focus();
+        return;
+      }
+      formError.style.display = 'none';
+      formError.textContent = '';
+
+      // Construct WhatsApp message
+      const message =
+        `سلام، من می‌خواهم سفارش دهم:\n` +
+        `نام: ${nameVal}\n` +
+        `شماره تماس: ${phoneVal}\n` +
+        `کد دسته گل: ${bouquetVal}\n` +
+        `لطفاً اطلاعات بیشتر را به من بدهید.`;
+
+      // Open WhatsApp chat with prefilled message in new tab
+      const whatsappURL = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappURL, '_blank');
+
+      // Close modal
+      modal.classList.remove('active');
+    });
+
+    // Keyboard accessibility to close modal on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
+</content>
+</create_file>
